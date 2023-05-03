@@ -14,7 +14,7 @@ public class UserController {
     private final HashMap<String, User> users = new HashMap();
 
     @PostMapping
-    public void createUser(@RequestBody User user) {
+    public User createUser(@RequestBody User user) {
         if (user.getEmail()
                 .isEmpty() || user.getEmail()
                 .isBlank() || user.getEmail() == null) {
@@ -31,6 +31,7 @@ public class UserController {
         }
 
         users.put(user.getEmail(), user);
+        return user;
     }
 
     @GetMapping
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping
-    public void updateOrCreateUser(@RequestBody User user) {
+    public User updateOrCreateUser(@RequestBody User user) {
         if (user.getEmail()
                 .isEmpty() || user.getEmail()
                 .isBlank() || user.getEmail() == null) {
@@ -51,5 +52,6 @@ public class UserController {
         }
 
         users.put(user.getEmail(), user);
+        return user;
     }
 }

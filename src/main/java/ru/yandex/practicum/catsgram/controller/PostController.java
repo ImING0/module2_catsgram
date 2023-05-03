@@ -1,5 +1,7 @@
 package ru.yandex.practicum.catsgram.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +15,11 @@ public class PostController {
 
     private final List<Post> posts = new ArrayList<>();
 
+    private final static Logger logger = LoggerFactory.getLogger(PostController.class);
+
     @GetMapping("/posts")
     public List<Post> findAll() {
+        logger.debug("Текущее количество постов: {}",  posts.size());
         return posts;
     }
 
