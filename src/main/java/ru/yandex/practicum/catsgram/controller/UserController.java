@@ -1,23 +1,55 @@
 package ru.yandex.practicum.catsgram.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.catsgram.exciptions.InvalidEmailException;
+import ru.yandex.practicum.catsgram.exciptions.UserAlreadyExistException;
 import ru.yandex.practicum.catsgram.model.User;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final HashSet<User> users = new HashSet<>();
+    private final HashMap<String, User> users = new HashMap();
 
     @PostMapping
-    public void addUser(@RequestBody User user) {
-        
+    public void createUser(@RequestBody User user) {
+        if (user.getEmail()
+                .isEmpty() || user.getEmail()
+                .isBlank() || user.getEmail() == null) {
+            try {
+                throw  new InvalidEmailException("email адрес пуст " + user.getEmail());
+            } catch (InvalidEmailException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (users.containsKey(user.getEmail())) try {
+            throw new UserAlreadyExistException("Пользователь с таким email уже существует" + user.getEmail());
+        } catch (UserAlreadyExistException e) {
+            System.out.println(e.getMessage());
+        }
+
+        users.put(user.getEmail(), user);
+    }
+
+    @GetMapping
+    public List<User> getUsers() {
+        return new ArrayList<>(users.values());
+    }
+
+    @PutMapping
+    public void updateOrCreateUser(@RequestBody User user) {
+        if (user.getEmail()
+                .isEmpty() || user.getEmail()
+                .isBlank() || user.getEmail() == null) {
+            try {
+                throw  new InvalidEmailException("email адрес пуст " + user.getEmail());
+            } catch (InvalidEmailException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        users.put(user.getEmail(), user);
     }
 }
