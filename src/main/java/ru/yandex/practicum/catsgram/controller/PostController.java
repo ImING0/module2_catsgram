@@ -1,5 +1,6 @@
 package ru.yandex.practicum.catsgram.controller;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class PostController {
 
     @PostMapping(value = "/post")
     public void create(@RequestBody Post post) {
+        logger.debug("Объект: {}", new Gson().toJson(post));
         posts.add(post);
     }
 }

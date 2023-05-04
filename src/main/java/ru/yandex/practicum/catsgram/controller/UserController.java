@@ -1,5 +1,8 @@
 package ru.yandex.practicum.catsgram.controller;
 
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.catsgram.exciptions.InvalidEmailException;
 import ru.yandex.practicum.catsgram.exciptions.UserAlreadyExistException;
@@ -12,6 +15,7 @@ import java.util.*;
 public class UserController {
 
     private final HashMap<String, User> users = new HashMap();
+    private final static Logger log = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping
     public User createUser(@RequestBody User user) {
@@ -30,12 +34,14 @@ public class UserController {
             System.out.println(e.getMessage());
         }
 
+        log.debug("Объект: {}", new Gson().toJson(user));
         users.put(user.getEmail(), user);
         return user;
     }
 
     @GetMapping
     public List<User> getUsers() {
+        log.debug("Кол-во пользователей в текущий момент: {}", users.size());
         return new ArrayList<>(users.values());
     }
 
