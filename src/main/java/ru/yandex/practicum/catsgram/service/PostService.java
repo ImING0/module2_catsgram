@@ -1,6 +1,7 @@
 package ru.yandex.practicum.catsgram.service;
 
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.catsgram.exciptions.PostNotFoundException;
 import ru.yandex.practicum.catsgram.model.Post;
 
 import java.util.ArrayList;
@@ -14,10 +15,16 @@ public class PostService {
         return posts;
     }
 
+    public Post findPostById(int id) {
+        return posts.stream()
+                .filter(post -> post.getId()
+                        .equals(id))
+                .findFirst()
+                .orElseThrow(() ->  new PostNotFoundException(String.format("Пост с id %d не найден", id)));
+    }
+
     public Post create(Post post) {
         posts.add(post);
         return post;
     }
-
-   
 }
