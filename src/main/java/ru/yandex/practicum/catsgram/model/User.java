@@ -8,25 +8,6 @@ public class User {
     private String nickname;
     private LocalDate birthdate;
 
-    public User(String email, String nickname, LocalDate birthdate) {
-        this.email = email;
-        this.nickname = nickname;
-        this.birthdate = birthdate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return email.equals(user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
-    }
-
     public String getEmail() {
         return email;
     }
@@ -49,5 +30,18 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return email.equals(user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }

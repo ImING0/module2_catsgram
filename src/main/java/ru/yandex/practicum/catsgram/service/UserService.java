@@ -1,8 +1,8 @@
 package ru.yandex.practicum.catsgram.service;
 
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.catsgram.exciptions.InvalidEmailException;
-import ru.yandex.practicum.catsgram.exciptions.UserAlreadyExistException;
+import ru.yandex.practicum.catsgram.exception.InvalidEmailException;
+import ru.yandex.practicum.catsgram.exception.UserAlreadyExistException;
 import ru.yandex.practicum.catsgram.model.User;
 
 import java.util.Collection;
@@ -17,22 +17,20 @@ public class UserService {
         return users.values();
     }
 
-    public User createUser(User user) throws UserAlreadyExistException, InvalidEmailException {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
+    public User createUser(User user) {
+        checkEmail(user);
         if (users.containsKey(user.getEmail())) {
-            throw new UserAlreadyExistException("Пользователь с электронной почтой " +
-                    user.getEmail() + " уже зарегистрирован.");
+            throw new UserAlreadyExistException(String.format(
+                    "Пользователь с электронной почтой %s уже зарегистрирован.",
+                    user.getEmail()
+            ));
         }
         users.put(user.getEmail(), user);
         return user;
     }
 
-    public User updateUser(User user) throws InvalidEmailException {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
-        }
+    public User updateUser(User user) {
+        checkEmail(user);
         users.put(user.getEmail(), user);
 
         return user;
@@ -43,5 +41,11 @@ public class UserService {
             return null;
         }
         return users.get(email);
+    }
+
+    private void checkEmail(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            throw new InvalidEmailException("Адрес электронной почты не может быть пустым.");
+        }
     }
 }
