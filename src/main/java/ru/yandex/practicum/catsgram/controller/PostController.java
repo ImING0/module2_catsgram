@@ -35,10 +35,9 @@ public class PostController {
         if (page < 0) {
             throw new IncorrectParameterException("page");
         }
-        if ( size <= 0) {
+        if (size <= 0) {
             throw new IncorrectParameterException("size");
         }
-
         Integer from = page * size;
         return postService.findAll(size, from, sort);
     }

@@ -29,11 +29,11 @@ public class PostFeedController {
         if (!SORTS.contains(feedParams.getSort())) {
             throw new IncorrectParameterException("sort");
         }
-        if (feedParams.getFriendsEmails().isEmpty()) {
-            throw new IncorrectParameterException("email");
-        }
         if (feedParams.getSize() == null || feedParams.getSize() <= 0) {
             throw new IncorrectParameterException("size");
+        }
+        if (feedParams.getFriendsEmails().isEmpty()) {
+            throw new IncorrectParameterException("friendsEmails");
         }
 
         List<Post> result = new ArrayList<>();
